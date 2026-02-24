@@ -1,0 +1,29 @@
+# Build stage
+FROM node:18 AS builder
+WORKDIR /app
+COPY . .
+RUN npm install && npm run build
+
+# Production stage
+FROM e-cpos-docker-prod-local.docker.lowes.com/certified-images/alpine/v3.18/nginx:v1.24
+
+# Switch to root to set up directories and permissions
+USER root
+RUN mkdir -p /var/log/nginx/ \
+    && mkdir -p /var/lib/nginx/logs \
+    && chown -R 10101:10101 /var/log/nginx/ /var/lib/nginx/ /etc/nginx /var/run/ /var/cache/
+
+RUN rm -rf /var/www/
+
+# Copy built app
+COPY --from=builder /app/dist /var/www/bitbucket-integration-app
+RUN chown -R 10101:10101 /var/www/bitbucket-integration-app
+
+# Copy nginx config
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Switch to non-root user
+USER 10101
+
+EXPOSE 8080
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
