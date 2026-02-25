@@ -65,7 +65,8 @@ export const handleUpdateFiles = async (
     const results = response.data.updatedResults || [];
 
     results.forEach((result: any) => {
-      const joinedPom = result.pomContent?.join("\n") || "";
+      const eol = result.eol === "\r\n" ? "\r\n" : "\n";
+      const joinedPom = result.pomContent?.join(eol) || "";
       const fileId = createIdFromParts(
         result.projectName,
         result.repo,
