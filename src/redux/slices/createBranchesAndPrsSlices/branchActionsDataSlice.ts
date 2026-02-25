@@ -44,7 +44,7 @@ export interface BranchActionsData {
 }
 
 const defaultState: BranchActionsData = {
-  supportedProjects: ["E-OP", "E-EOR"],
+  supportedProjects: ["SHRSU"],
   fromBranch: "develop",
   newBranch: "feature/",
   prFromBranch: "feature/",
@@ -65,7 +65,6 @@ const branchActionsSlice = createSlice({
       state.projects = state.projects.filter(
         (project) => project.name !== action.payload.name
       );
-
       state.projects.push(action.payload);
 
       const index = state.supportedProjects.indexOf(action.payload.name);

@@ -30,12 +30,11 @@ export const handleCommit = async (
         `Update ${dependency.name} to ${dependency.selectedVersion}`,
     }));
 
-  if (!dependency.ticketNo || selectedPomFiles.length === 0) return;
+  if (selectedPomFiles.length === 0) return;
 
   const payload = {
     commitInfoList: selectedPomFiles,
     branch: dependency.updateFileBranch,
-    ticketNumber: dependency.ticketNo,
   };
 
   try {

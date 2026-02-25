@@ -32,6 +32,7 @@ export const handleFetchPullRequestBuilds = async (
 
   try {
     const res = await getPullRequestBuildsAPI(requestBody);
+    console.log("Build status poll response (pipeline):", res.data);
     const builds = res.data.pullRequestBuilds;
 
     builds.forEach((buildResult: any) => {

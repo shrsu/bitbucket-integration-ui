@@ -18,7 +18,6 @@ export interface AddedDependency {
   prFromBranch: string;
   toBranch: string;
   updateFileBranch: string;
-  ticketNo: string;
   executeAll: boolean;
   isOpen: boolean;
   isDependentApplicationsOpen: boolean;

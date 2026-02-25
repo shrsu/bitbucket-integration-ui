@@ -138,7 +138,7 @@ const IEUpdateFilesSection: React.FC<Props> = ({
 
   const onCommitFiles = async () => {
     try {
-      const hasValidTicket = dependency.ticketNo?.trim();
+      const hasValidTicket = true;
       const hasFilesToCommit = pomFiles.some((f) => f.selectedForCommit);
 
       if (!hasValidTicket || !hasFilesToCommit) return;
@@ -408,7 +408,7 @@ const IEUpdateFilesSection: React.FC<Props> = ({
             <div className="flex justify-end">
               <Button
                 disabled={
-                  !dependency.ticketNo?.trim() ||
+                  false ||
                   pomFiles.filter((f) => f.selectedForCommit).length === 0
                 }
                 onClick={onCommitFiles}

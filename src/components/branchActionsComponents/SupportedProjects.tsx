@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../ui/button";
 import { getRepositories } from "./branchActions/getRepositories";
 
-const toBackendProjectName = (name: string): string => name.toLowerCase();
+const toBackendProjectName = (name: string): string => name;
 
 function SupportedProjects() {
   const [selected, setSelected] = useState<Record<string, boolean>>({});

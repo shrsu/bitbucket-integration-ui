@@ -16,7 +16,7 @@ import {
 } from "@/redux/slices/pipelineSlices/dependentRepositoriesSlice";
 import { type RootState } from "@/redux/store";
 import { CheckCircle, XCircle } from "lucide-react";
-import React, { type ChangeEvent } from "react";
+import React, { type ChangeEvent, useMemo } from "react";
 import { FaLink } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../../ui/button";
@@ -35,11 +35,16 @@ const IECreatePullRequestsSection: React.FC<IECreatePullRequestsDivProps> = ({
   const { showLoader, hideLoader } = useLoader();
   const dispatch = useDispatch();
 
-  const dependentRepositories: DependentRepository[] = useSelector(
-    (state: RootState) =>
-      state.dependentRepositories.filter(
+  const allDependentRepositories: DependentRepository[] = useSelector(
+    (state: RootState) => state.dependentRepositories
+  );
+
+  const dependentRepositories = useMemo(
+    () =>
+      allDependentRepositories.filter(
         (repo) => repo.dependencyId === dependency.id
-      )
+      ),
+    [allDependentRepositories, dependency.id]
   );
 
   const handleInputChange =

@@ -41,6 +41,11 @@ export const handleCreatePullRequests = async (
     res.data.createPullRequestResults.forEach((result: any) => {
       const isError = result.status === "error";
 
+      const links = result.result?.links || {};
+      const prLink =
+        links.html?.href ??
+        (Array.isArray(links.self) ? links.self[0]?.href : links.self?.href);
+
       if (isError) {
         errorCount++;
       } else {
@@ -55,7 +60,7 @@ export const handleCreatePullRequests = async (
           updates: {
             createPullRequestsStatus: result.status,
             createPullRequestsMessage: result.message,
-            prLink: result.result?.links?.self?.[0]?.href,
+            prLink: prLink || "",
             prId: result.result?.id,
           },
         })

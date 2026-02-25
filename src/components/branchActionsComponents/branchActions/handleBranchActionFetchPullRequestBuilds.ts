@@ -23,6 +23,10 @@ export const handleBranchActionFetchPullRequestBuilds = async (
 
   try {
     const res = await getPullRequestBuildsAPI(requestBody);
+    console.log(
+      "Build status poll response (branch actions):",
+      res.data
+    );
     const builds = res.data.pullRequestBuilds;
 
     builds.forEach((buildResult: any) => {

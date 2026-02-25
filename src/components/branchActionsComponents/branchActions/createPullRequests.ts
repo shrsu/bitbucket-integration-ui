@@ -48,6 +48,11 @@ export const createPullRequests = async (
     res.data.createPullRequestResults.forEach((result: any) => {
       const { repo, projectName, status, message } = result;
 
+      const links = result.result?.links || {};
+      const prLink =
+        links.html?.href ??
+        (Array.isArray(links.self) ? links.self[0]?.href : links.self?.href);
+
       if (status === "success") successCount++;
 
       dispatch(
@@ -57,7 +62,7 @@ export const createPullRequests = async (
           updates: {
             createPullRequestStatus: status,
             createPullRequestMessage: message,
-            pullRequestLink: result.result?.links?.self?.[0]?.href,
+            pullRequestLink: prLink || "",
             prId: result.result?.id,
           },
         })

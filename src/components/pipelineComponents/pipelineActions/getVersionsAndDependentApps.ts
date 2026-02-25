@@ -26,14 +26,20 @@ export const getVersionsAndDependantApps = async (
   try {
     const response = await getDependentAppsAndVersionsAPI(dependencyName);
     const {
-      versions,
+      versions: rawVersions,
       applications,
-    }: { versions: { name: string }[]; applications: Application[] } =
-      response.data;
+    }: {
+      versions: { name?: string; version?: string }[];
+      applications: Application[];
+    } = response.data;
+
+    const versions = (rawVersions ?? []).map((v) => ({
+      name: v.name ?? v.version ?? String(v),
+    }));
 
     const dependencyId = nanoid();
 
-    const selectedVersion = versions[1]?.name || "";
+    const selectedVersion = versions[0]?.name ?? "";
 
     dispatch(
       addSelectedDependency({
@@ -42,11 +48,10 @@ export const getVersionsAndDependantApps = async (
         versions,
         selectedVersion,
         fromBranch: "develop",
-        newBranch: "feature/EOP-",
-        prFromBranch: "feature/EOP-",
+        newBranch: "",
+        prFromBranch: "",
         toBranch: "develop",
-        updateFileBranch: "feature/EOP-",
-        ticketNo: "EOP-",
+        updateFileBranch: "",
         executeAll: false,
         isOpen: false,
         isDependentApplicationsOpen: false,
@@ -103,6 +108,13 @@ export const getVersionsAndDependantApps = async (
           createPullRequests: true,
           prLink: "",
           dependentApplications: [],
+          build: {
+            cancelled: 0,
+            successful: 0,
+            inProgress: 0,
+            failed: 0,
+            unknown: 0,
+          },
         });
       }
 
